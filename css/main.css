@@ -260,13 +260,13 @@ body {
   position: relative;
   z-index: 2;
   font-family: "ads-piccolo", sans-serif;
-  font-size: 2.8rem;
+  font-size: 3.2rem;
   font-weight: 400;
-  color: #fff;
-  -webkit-text-stroke: 3px #1a1a1a;
+  color: yellow;
+  -webkit-text-stroke: 5px orange;
   paint-order: stroke fill;
   white-space: nowrap;
-  filter: drop-shadow(4px 4px 0 rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(4px 4px 0 orange);
   letter-spacing: -1.5px;
 }
 
