@@ -1,20 +1,26 @@
 // ========================================
-// 変数・ベース（キッズ・ポップ・アクセシブル）
+// 変数・ベース（ポップなおもちゃ箱）
 // ========================================
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap');
 
-$color-primary: #2563eb;
-$color-success: #22c55e;
-$color-danger: #ef4444;
-$color-gold: #fbbf24;
+// ポップなおもちゃ箱 パレット
+$color-primary: #0ea5e9;       // sky blue
+$color-success: #84cc16;      // lime green
+$color-danger: #ec4899;       // candy pink
+$color-warm: #f97316;         // vibrant orange
+$color-gold: #eab308;         // sunny yellow
 $color-silver: #94a3b8;
 $color-bronze: #d97706;
+$color-purple: #a855f7;       // royal purple
 $color-text: #1e293b;
 $color-text-muted: #475569;
+$color-cream: #fffbeb;
+$color-border-light: #fff;
 $font-family: 'M PLUS Rounded 1c', 'Hiragino Sans', sans-serif;
 $spacing: 16px;
-$radius: 20px;
-$radius-lg: 28px;
+$radius: 24px;
+$radius-lg: 32px;
+$radius-pill: 9999px;         // ボタンなどピル型
 
 * {
   box-sizing: border-box;
@@ -30,7 +36,7 @@ html {
 body {
   font-family: $font-family;
   min-height: 100vh;
-  background: linear-gradient(160deg, #fef3c7 0%, #fde68a 40%, #fcd34d 100%);
+  background: linear-gradient(180deg, #bae6fd 0%, #7dd3fc 50%, #38bdf8 100%);
   color: $color-text;
   padding: $spacing;
 }
@@ -52,7 +58,7 @@ body {
   font-weight: 800;
   color: #1e293b;
   margin-bottom: 32px;
-  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.9);
   letter-spacing: 0.02em;
 }
 
@@ -67,15 +73,49 @@ body {
 .index-link {
   display: block;
   padding: 18px 28px;
-  background: rgba(255, 255, 255, 0.95);
-  color: $color-primary;
+  background: linear-gradient(180deg, #fff 0%, #f0fdfa 100%);
+  color: #0d9488;
   text-decoration: none;
-  border-radius: $radius-lg;
+  border-radius: $radius-pill;
   font-weight: 700;
   font-size: 1.05rem;
   text-align: center;
-  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.1), 0 8px 20px rgba(0, 0, 0, 0.12);
+  border: 4px solid $color-border-light;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 4px 0 rgba(0, 0, 0, 0.08),
+    0 8px 24px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
+
+  &:nth-child(1) {
+    background: linear-gradient(180deg, #a7f3d0 0%, #34d399 100%);
+    color: #065f46;
+    border-color: #fff;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      0 4px 0 #059669,
+      0 8px 24px rgba(5, 150, 105, 0.25);
+  }
+
+  &:nth-child(2) {
+    background: linear-gradient(180deg, #93c5fd 0%, #3b82f6 100%);
+    color: #1e3a8a;
+    border-color: #fff;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      0 4px 0 #2563eb,
+      0 8px 24px rgba(37, 99, 235, 0.25);
+  }
+
+  &:nth-child(3) {
+    background: linear-gradient(180deg, #fde68a 0%, #fbbf24 100%);
+    color: #78350f;
+    border-color: #fff;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      0 4px 0 #d97706,
+      0 8px 24px rgba(217, 119, 6, 0.25);
+  }
 
   &:active {
     transform: scale(0.98);
@@ -105,10 +145,14 @@ body {
 
 .problem-content {
   flex: 1;
-  background: rgba(255, 255, 255, 0.95);
+  background: linear-gradient(180deg, #fff 0%, #fefce8 100%);
   border-radius: $radius-lg;
   padding: 28px;
-  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.08), 0 10px 30px rgba(0, 0, 0, 0.12);
+  border: 4px solid $color-border-light;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 6px 0 rgba(0, 0, 0, 0.06),
+    0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 .problem-text {
@@ -130,18 +174,26 @@ body {
   font-size: 1.1rem;
   font-family: inherit;
   font-weight: 500;
-  border: 3px solid #cbd5e1;
-  border-radius: $radius-lg;
-  background: #fff;
+  border: 4px solid $color-border-light;
+  border-radius: $radius;
+  background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
   color: #1e293b;
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
   text-align: left;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 3px 0 rgba(0, 0, 0, 0.05);
 
   &:hover:not(:disabled) {
-    border-color: $color-primary;
-    background: rgba($color-primary, 0.1);
+    border-color: #fff;
+    background: linear-gradient(180deg, #bae6fd 0%, #7dd3fc 100%);
+    color: #0c4a6e;
     transform: translateY(-2px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      0 4px 0 #0ea5e9,
+      0 6px 16px rgba(14, 165, 233, 0.25);
   }
 
   &:disabled {
@@ -160,19 +212,37 @@ body {
 .progress-track {
   position: relative;
   height: 48px;
-  background: linear-gradient(180deg, #7dd3fc 0%, #0ea5e9 100%);
-  border-radius: 24px;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 4px 0 rgba(0, 0, 0, 0.1);
+  background: linear-gradient(180deg, #bae6fd 0%, #0ea5e9 100%);
+  border: 4px solid $color-border-light;
+  border-radius: $radius-pill;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 4px 0 #0284c7,
+    0 8px 20px rgba(14, 165, 233, 0.2);
   overflow: visible;
 
+  &--ship {
+    background: linear-gradient(180deg, #bae6fd 0%, #0ea5e9 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.6),
+      0 4px 0 #0284c7,
+      0 8px 20px rgba(14, 165, 233, 0.2);
+  }
+
   &--train {
-    background: linear-gradient(180deg, #64748b 0%, #475569 100%);
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 4px 0 rgba(0, 0, 0, 0.15);
+    background: linear-gradient(180deg, #e9d5ff 0%, #a855f7 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.6),
+      0 4px 0 #7c3aed,
+      0 8px 20px rgba(168, 85, 247, 0.2);
   }
 
   &--hero {
-    background: linear-gradient(180deg, #86efac 0%, #22c55e 100%);
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 4px 0 rgba(0, 0, 0, 0.1);
+    background: linear-gradient(180deg, #bbf7d0 0%, #22c55e 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.6),
+      0 4px 0 #16a34a,
+      0 8px 20px rgba(34, 197, 94, 0.2);
   }
 }
 
@@ -265,6 +335,7 @@ body {
   gap: 12px;
   padding: 0;
   transform-origin: center center;
+  overflow: visible;
 }
 
 .feedback-correct {
@@ -273,7 +344,9 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
-  min-height: 140px;
+  min-height: 160px;
+  min-width: 160px;
+  overflow: visible;
 
   &.visible {
     display: flex;
@@ -308,16 +381,23 @@ body {
 
 .correct-circle {
   width: 120px;
-  height: 180px;
+  height: 120px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   filter: drop-shadow(4px 4px 0 rgba(0, 0, 0, 0.1));
+  overflow: visible;
+}
+
+.correct-circle-outline {
+  stroke: #14532d;
+  stroke-width: 20;
+  stroke-linecap: round;
 }
 
 .correct-circle-path {
-  stroke: #ef4444;
+  stroke: #22c55e;
   stroke-width: 14;
   stroke-linecap: round;
   transform-origin: center;
@@ -329,13 +409,11 @@ body {
   font-family: "ads-piccolo", sans-serif;
   font-size: 3.2rem;
   font-weight: 400;
-  color: yellow;
-  // -webkit-text-stroke: 3px rgba(0, 0, 0, 0.2);
-  -webkit-text-stroke: 5px orange;
+  color: #fef08a;
+  -webkit-text-stroke: 5px #16a34a;
   paint-order: stroke fill;
   white-space: nowrap;
-  // filter: drop-shadow(4px 4px 0 rgba(0, 0, 0, 0.2));
-  filter: drop-shadow(4px 4px 0 orange);
+  filter: drop-shadow(4px 4px 0 #16a34a);
   letter-spacing: -1.5px;
 }
 
@@ -373,7 +451,7 @@ body {
 }
 
 .incorrect-x-path {
-  stroke: #2563eb;
+  stroke: #ec4899;
   stroke-width: 14;
   stroke-linecap: round;
 }
@@ -467,20 +545,27 @@ body {
 .btn-top {
   display: inline-block;
   padding: 16px 32px;
-  background: $color-primary;
-  color: #fff;
+  background: linear-gradient(180deg, #86efac 0%, #22c55e 100%);
+  color: #14532d;
   font-size: 1.05rem;
   font-weight: 700;
   font-family: inherit;
-  border: none;
-  border-radius: $radius-lg;
+  border: 4px solid $color-border-light;
+  border-radius: $radius-pill;
   cursor: pointer;
-  box-shadow: 0 5px 0 #1d4ed8, 0 8px 20px rgba(37, 99, 235, 0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 5px 0 #16a34a,
+    0 8px 24px rgba(34, 197, 94, 0.3);
   text-decoration: none;
   margin-top: 8px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s, transform 0.2s;
+
+  &:active {
+    transform: scale(0.98);
+  }
 
   &.visible {
     opacity: 1;
@@ -520,8 +605,8 @@ body {
 .result-score {
   font-size: 2.5rem;
   font-weight: 800;
-  color: #d97706;
-  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+  color: #b45309;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.9);
   margin-top: 8px;
 }
 
@@ -535,10 +620,14 @@ body {
 .result-content,
 .ranking-content {
   flex: 1;
-  background: rgba(255, 255, 255, 0.95);
+  background: linear-gradient(180deg, #fff 0%, #fefce8 100%);
   border-radius: $radius-lg;
   padding: 28px;
-  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.08), 0 10px 30px rgba(0, 0, 0, 0.12);
+  border: 4px solid $color-border-light;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 6px 0 rgba(0, 0, 0, 0.06),
+    0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 .ranking-list {
@@ -552,12 +641,17 @@ body {
   padding: 16px 20px;
   margin-bottom: 10px;
   border-radius: $radius;
-  background: #f8fafc;
-  transition: background 0.2s;
+  background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+  border: 3px solid #e2e8f0;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
 
   &.is-player {
-    background: linear-gradient(135deg, rgba($color-primary, 0.15) 0%, rgba($color-primary, 0.08) 100%);
-    border: 3px solid $color-primary;
+    background: linear-gradient(180deg, #bae6fd 0%, #7dd3fc 100%);
+    border-color: $color-border-light;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.6),
+      0 3px 0 rgba(14, 165, 233, 0.3);
   }
 
   &.top3 {
@@ -578,24 +672,26 @@ body {
   font-family: inherit;
   border-radius: 50%;
   color: #fff;
+  border: 3px solid $color-border-light;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
 
   &.rank-1 {
-    background: linear-gradient(135deg, $color-gold, #ffb347);
-    box-shadow: 0 2px 8px rgba($color-gold, 0.5);
+    background: linear-gradient(180deg, #fef08a 0%, #eab308 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 3px 0 #ca8a04;
   }
 
   &.rank-2 {
-    background: linear-gradient(135deg, $color-silver, #a8a8a8);
-    box-shadow: 0 2px 8px rgba($color-silver, 0.5);
+    background: linear-gradient(180deg, #e2e8f0 0%, #94a3b8 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 3px 0 #64748b;
   }
 
   &.rank-3 {
-    background: linear-gradient(135deg, $color-bronze, #b87333);
-    box-shadow: 0 2px 8px rgba($color-bronze, 0.5);
+    background: linear-gradient(180deg, #fed7aa 0%, #d97706 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 3px 0 #b45309;
   }
 
   &.rank-other {
-    background: #6c757d;
+    background: linear-gradient(180deg, #cbd5e1 0%, #64748b 100%);
   }
 }
 
@@ -701,10 +797,14 @@ body {
 
 .settings-content {
   flex: 1;
-  background: rgba(255, 255, 255, 0.95);
+  background: linear-gradient(180deg, #fff 0%, #fefce8 100%);
   border-radius: $radius-lg;
   padding: 28px;
-  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.08), 0 10px 30px rgba(0, 0, 0, 0.12);
+  border: 4px solid $color-border-light;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 6px 0 rgba(0, 0, 0, 0.06),
+    0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 .settings-section {
@@ -736,14 +836,18 @@ body {
   gap: 12px;
   padding: 16px 20px;
   border-radius: $radius;
-  background: #f8fafc;
-  border: 3px solid #e2e8f0;
+  background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+  border: 4px solid #e2e8f0;
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
 
   &:has(input:checked) {
-    border-color: $color-primary;
-    background: rgba($color-primary, 0.08);
+    border-color: $color-border-light;
+    background: linear-gradient(180deg, #bae6fd 0%, #7dd3fc 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.6),
+      0 3px 0 rgba(14, 165, 233, 0.3);
   }
 
   input {

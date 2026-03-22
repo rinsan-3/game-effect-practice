@@ -115,7 +115,7 @@
     confettiLayer?.classList.add('visible');
     confettiLayer?.removeAttribute('aria-hidden');
 
-    const colors = ['#ef4444', '#fbbf24', '#22c55e', '#2563eb', '#ec4899', '#f97316', '#8b5cf6'];
+    const colors = ['#ec4899', '#eab308', '#22c55e', '#0ea5e9', '#f97316', '#a855f7', '#fef08a'];
     const centerX = window.innerWidth / 2;
     const startY = window.innerHeight + 20;
 
