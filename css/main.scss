@@ -272,6 +272,32 @@ body {
   &.visible {
     display: flex;
   }
+
+  &--clear .correct-circle {
+    display: none;
+  }
+}
+
+.clear-light {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  margin: -100px 0 0 -100px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg 10deg,
+    rgba(255, 230, 150, 0.5) 10deg 22deg
+  );
+  z-index: 0;
+  pointer-events: none;
+
+  .feedback-correct--clear & {
+    display: block;
+  }
 }
 
 .correct-circle {
@@ -314,9 +340,9 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 240px;
-  height: 240px;
-  margin: -120px 0 0 -120px;
+  width: 380px;
+  height: 380px;
+  margin: -190px 0 0 -190px;
   pointer-events: none;
 }
 
@@ -326,6 +352,17 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   // filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.4));
+
+  &--line {
+    width: 40px;
+    height: 3px;
+    background: currentColor;
+    border-radius: 2px;
+    left: 50%;
+    top: 50%;
+    margin: 0;
+    transform: translate(0, -50%);
+  }
 }
 
 .feedback-icon {

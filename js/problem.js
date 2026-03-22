@@ -39,6 +39,7 @@
   const feedbackCorrect = document.getElementById('feedbackCorrect');
   const correctText = document.getElementById('correctText');
   const correctStars = document.getElementById('correctStars');
+  const clearLight = document.getElementById('clearLight');
 
   function cancelRedirect() {
     if (redirectTimer) {
@@ -157,7 +158,7 @@
     feedbackIcon.className = 'feedback-icon';
     feedbackText.className = 'feedback-text';
     btnTop.classList.remove('visible');
-    if (feedbackCorrect) feedbackCorrect.classList.remove('visible');
+    if (feedbackCorrect) feedbackCorrect.classList.remove('visible', 'feedback-correct--clear');
     if (feedbackIcon) feedbackIcon.classList.remove('visible');
     if (feedbackText) feedbackText.classList.remove('visible');
 
@@ -173,7 +174,7 @@
         feedbackText.classList.add('feedback-text--incorrect');
       }
     } else if (type === 'clear') {
-      if (feedbackCorrect) feedbackCorrect.classList.add('visible');
+      if (feedbackCorrect) feedbackCorrect.classList.add('visible', 'feedback-correct--clear');
       if (correctText) {
         correctText.innerHTML = Array.from('クリア！').map((c) => `<span class="correct-char">${c}</span>`).join('');
       }
@@ -196,11 +197,13 @@
     correctText.innerHTML = Array.from(text).map((c) => `<span class="correct-char">${c}</span>`).join('');
   }
 
-  function createCorrectStars() {
+  function createCorrectStars(options) {
     if (!correctStars) return;
     correctStars.innerHTML = '';
+    const includeLines = options?.includeLines !== false;
     const starCount = 14;
     const triangleCount = 8;
+    const lineCount = 12;
     const yellowColors = ['#fbbf24', '#f59e0b', '#fde68a', '#fef08a'];
 
     const starSvg = (size) => `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="currentColor"><path d="M12 2 L14.5 9.5 L22 12 L14.5 14.5 L12 22 L9.5 14.5 L2 12 L9.5 9.5 Z"/></svg>`;
@@ -240,7 +243,7 @@
     for (let i = 0; i < starCount; i++) {
       const angle = (360 / starCount) * i + Math.random() * 20;
       const rad = (angle * Math.PI) / 180;
-      const dist = 50 + Math.random() * 60;
+      const dist = 90 + Math.random() * 70;
       const endX = Math.cos(rad) * dist;
       const endY = Math.sin(rad) * dist;
       const star = addParticle(starSvg(10 + Math.random() * 8), 'correct-star');
@@ -249,11 +252,44 @@
     for (let i = 0; i < triangleCount; i++) {
       const angle = (360 / triangleCount) * i + 22 + Math.random() * 15;
       const rad = (angle * Math.PI) / 180;
-      const dist = 45 + Math.random() * 50;
+      const dist = 85 + Math.random() * 65;
       const endX = Math.cos(rad) * dist;
       const endY = Math.sin(rad) * dist;
       const tri = addParticle(triangleSvg(6 + Math.random() * 6), 'correct-star correct-star--triangle');
       animateParticle(tri, endX, endY);
+    }
+
+    if (includeLines) {
+      for (let i = 0; i < lineCount; i++) {
+        const angle = (360 / lineCount) * i + Math.random() * 25;
+        const lineLength = 25 + Math.random() * 30;
+        const line = document.createElement('div');
+        line.className = 'correct-star correct-star--line';
+        line.style.width = lineLength + 'px';
+        line.style.color = yellowColors[Math.floor(Math.random() * yellowColors.length)];
+        correctStars.appendChild(line);
+        gsap.set(line, {
+          rotation: angle,
+          scaleX: 0,
+          opacity: 1,
+          xPercent: 0,
+          yPercent: -50,
+          transformOrigin: 'left center',
+        });
+        gsap.to(line, {
+          scaleX: 1,
+          duration: 0.25,
+          delay: 0.1,
+          ease: 'power2.out',
+        });
+        gsap.to(line, {
+          scaleX: 0,
+          duration: 0.2,
+          delay: 0.35,
+          ease: 'power2.in',
+          onStart: () => gsap.set(line, { transformOrigin: '100% 50%' }),
+        });
+      }
     }
   }
 
@@ -443,6 +479,29 @@
     }
   }
 
+  function animateClearContent() {
+    const chars = correctText?.querySelectorAll('.correct-char');
+    if (clearLight) {
+      gsap.set(clearLight, { rotation: 0, opacity: 1 });
+      gsap.to(clearLight, {
+        rotation: 360,
+        duration: 6,
+        repeat: -1,
+        ease: 'none',
+      });
+    }
+    if (chars && chars.length) {
+      gsap.set(chars, { display: 'inline-block', scale: 3 });
+      gsap.to(chars, {
+        scale: 1,
+        duration: 0.5,
+        delay: 0.2,
+        ease: 'back.out(1.5)',
+        stagger: 0.03,
+      });
+    }
+  }
+
   function playClearEffect() {
     createConfetti();
     showFeedbackBadge('clear', true);
@@ -450,12 +509,12 @@
     gsap.set(btnTop, { opacity: 0 });
     gsap.set(feedbackBadge, { scale: 0 });
     gsap.to(feedbackBadge, { scale: 1, duration: 0.4, ease: 'back.out(1.5)' });
-    animateCorrectCircleAndText();
-    gsap.delayedCall(0.6, createCorrectStars);
+    animateClearContent();
+    gsap.delayedCall(0.6, () => createCorrectStars({ includeLines: false }));
     gsap.to(btnTop, { opacity: 1, duration: 0.3, delay: 1, onStart: () => btnTop.classList.add('visible') });
-    redirectTimer = gsap.delayedCall(2.5, () => {
-      window.location.href = 'result.html?status=clear';
-    });
+    // redirectTimer = gsap.delayedCall(2.5, () => {
+    //   window.location.href = 'result.html?status=clear';
+    // });
   }
 
   function handleChoiceClick() {
