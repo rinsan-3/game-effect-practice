@@ -452,9 +452,9 @@
       onStart: () => btnTop.classList.add('visible'),
     });
 
-    // redirectTimer = gsap.delayedCall(2.5, () => {
-    //   window.location.href = 'result.html?status=gameover';
-    // });
+    redirectTimer = gsap.delayedCall(2.5, () => {
+      window.location.href = 'result.html?status=gameover';
+    });
   }
 
   function animateCorrectCircleAndText() {
@@ -543,9 +543,9 @@
     animateClearContent();
     gsap.delayedCall(0.6, () => createCorrectStars({ includeLines: false }));
     gsap.to(btnTop, { opacity: 1, duration: 0.3, delay: 1, onStart: () => btnTop.classList.add('visible') });
-    // redirectTimer = gsap.delayedCall(2.5, () => {
-    //   window.location.href = 'result.html?status=clear';
-    // });
+    redirectTimer = gsap.delayedCall(2.5, () => {
+      window.location.href = 'result.html?status=clear';
+    });
   }
 
   function handleChoiceClick() {
