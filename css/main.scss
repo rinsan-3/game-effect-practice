@@ -240,7 +240,7 @@ body {
   transform-origin: center center;
 }
 
-// フィードバックバッジ（オーバーレイなし）
+// フィードバック（領域なし・コンテンツのみ表示）
 .feedback-badge {
   position: fixed;
   left: 50%;
@@ -250,10 +250,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  padding: 28px 40px;
-  background: #fff;
-  border-radius: $radius-lg;
-  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.1), 0 16px 40px rgba(0, 0, 0, 0.2);
+  padding: 0;
   z-index: 100;
   visibility: hidden;
   pointer-events: none;
@@ -264,14 +261,95 @@ body {
   }
 }
 
+.feedback-correct {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 140px;
+
+  &.visible {
+    display: flex;
+  }
+}
+
+.correct-circle {
+  width: 120px;
+  height: 180px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.correct-circle-path {
+  stroke: #ef4444;
+  stroke-width: 14;
+  stroke-linecap: round;
+  transform-origin: center;
+}
+
+.correct-text {
+  position: relative;
+  z-index: 2;
+  font-family: "ads-piccolo", sans-serif;
+  font-size: 2.8rem;
+  font-weight: 400;
+  color: #fff;
+  -webkit-text-stroke: 3px #1a1a1a;
+  paint-order: stroke fill;
+  white-space: nowrap;
+  filter: drop-shadow(4px 4px 0 rgba(0, 0, 0, 0.2));
+  letter-spacing: -1.5px;
+}
+
+.correct-char {
+  display: inline-block;
+}
+
+.correct-stars {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 240px;
+  height: 240px;
+  margin: -120px 0 0 -120px;
+  pointer-events: none;
+}
+
+.correct-star {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  // filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.4));
+}
+
 .feedback-icon {
+  display: none;
   width: 64px;
   height: 64px;
-  display: flex;
   align-items: center;
   justify-content: center;
   font-size: 48px;
   line-height: 1;
+
+  &.visible {
+    display: flex;
+  }
+}
+
+.feedback-text {
+  display: none;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: $color-text;
+  letter-spacing: 0.02em;
+
+  &.visible {
+    display: block;
+  }
 }
 
 .feedback-icon--correct {
@@ -280,13 +358,6 @@ body {
 
 .feedback-icon--incorrect {
   color: $color-danger;
-}
-
-.feedback-text {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: $color-text;
-  letter-spacing: 0.02em;
 }
 
 .feedback-text--correct {

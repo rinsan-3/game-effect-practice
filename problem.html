@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>学習アプリ - 問題</title>
   <link rel="stylesheet" href="css/main.css">
+  <script>
+    (function(d) {
+      var config = { kitId: 'kri1hux', scriptTimeout: 3000, async: true },
+      h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s);
+    })(document);
+  </script>
 </head>
 <body>
   <main class="problem-page">
@@ -29,6 +35,14 @@
 
     <!-- 正解/不正解フィードバック（オーバーレイなし） -->
     <div class="feedback-badge" id="feedbackBadge" aria-live="polite" aria-hidden="true">
+      <div class="feedback-correct" id="feedbackCorrect">
+        <svg class="correct-circle" viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="correct-circle-outline" cx="50" cy="50" r="44" fill="none"/>
+          <circle class="correct-circle-path" cx="50" cy="50" r="44" fill="none"/>
+        </svg>
+        <span class="correct-text" id="correctText"></span>
+        <div class="correct-stars" id="correctStars"></div>
+      </div>
       <span class="feedback-icon" id="feedbackIcon"></span>
       <span class="feedback-text" id="feedbackText"></span>
       <a href="#" class="btn-top feedback-btn" id="btnTop">TOPに戻る</a>
@@ -42,6 +56,7 @@
 
   <script src="js/theme.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/Physics2DPlugin.min.js"></script>
   <script src="js/problem.js"></script>
 </body>

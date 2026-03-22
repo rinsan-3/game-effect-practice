@@ -34,8 +34,11 @@
   let answered = false;
   let redirectTimer = null;
 
-  const ICON_CORRECT = '<svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="currentColor" stroke="currentColor" stroke-width="3"/><path d="M18 32 L28 42 L46 22" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const ICON_INCORRECT = '<svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="currentColor" stroke="currentColor" stroke-width="3"/><path d="M20 20 L44 44 M44 20 L20 44" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/></svg>';
+
+  const feedbackCorrect = document.getElementById('feedbackCorrect');
+  const correctText = document.getElementById('correctText');
+  const correctStars = document.getElementById('correctStars');
 
   function cancelRedirect() {
     if (redirectTimer) {
@@ -154,22 +157,26 @@
     feedbackIcon.className = 'feedback-icon';
     feedbackText.className = 'feedback-text';
     btnTop.classList.remove('visible');
+    if (feedbackCorrect) feedbackCorrect.classList.remove('visible');
+    if (feedbackIcon) feedbackIcon.classList.remove('visible');
+    if (feedbackText) feedbackText.classList.remove('visible');
 
     if (type === 'correct') {
-      feedbackIcon.innerHTML = ICON_CORRECT;
-      feedbackIcon.classList.add('feedback-icon--correct');
-      feedbackText.textContent = '正解！';
-      feedbackText.classList.add('feedback-text--correct');
+      if (feedbackCorrect) feedbackCorrect.classList.add('visible');
     } else if (type === 'incorrect') {
+      if (feedbackIcon) feedbackIcon.classList.add('visible');
       feedbackIcon.innerHTML = ICON_INCORRECT;
       feedbackIcon.classList.add('feedback-icon--incorrect');
-      feedbackText.textContent = '不正解...';
-      feedbackText.classList.add('feedback-text--incorrect');
+      if (feedbackText) {
+        feedbackText.classList.add('visible');
+        feedbackText.textContent = '不正解...';
+        feedbackText.classList.add('feedback-text--incorrect');
+      }
     } else if (type === 'clear') {
-      feedbackIcon.innerHTML = ICON_CORRECT;
-      feedbackIcon.classList.add('feedback-icon--correct');
-      feedbackText.textContent = 'クリア！';
-      feedbackText.classList.add('feedback-text--correct');
+      if (feedbackCorrect) feedbackCorrect.classList.add('visible');
+      if (correctText) {
+        correctText.innerHTML = Array.from('クリア！').map((c) => `<span class="correct-char">${c}</span>`).join('');
+      }
     }
 
     btnTop.style.display = showButton ? 'inline-block' : 'none';
@@ -184,10 +191,81 @@
     confettiLayer?.setAttribute('aria-hidden', 'true');
   }
 
+  function setupCorrectContent(text) {
+    if (!correctText) return;
+    correctText.innerHTML = Array.from(text).map((c) => `<span class="correct-char">${c}</span>`).join('');
+  }
+
+  function createCorrectStars() {
+    if (!correctStars) return;
+    correctStars.innerHTML = '';
+    const starCount = 14;
+    const triangleCount = 8;
+    const yellowColors = ['#fbbf24', '#f59e0b', '#fde68a', '#fef08a'];
+
+    const starSvg = (size) => `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="currentColor"><path d="M12 2 L14.5 9.5 L22 12 L14.5 14.5 L12 22 L9.5 14.5 L2 12 L9.5 9.5 Z"/></svg>`;
+    const triangleSvg = (size) => `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="currentColor"><path d="M12 4 L20 20 L4 20 Z"/></svg>`;
+
+    function addParticle(html, className) {
+      const el = document.createElement('div');
+      el.className = className;
+      el.innerHTML = html;
+      el.style.color = yellowColors[Math.floor(Math.random() * yellowColors.length)];
+      return el;
+    }
+
+    function animateParticle(el, endX, endY) {
+      gsap.set(el, { x: 0, y: 0, opacity: 1, scale: 0 });
+      correctStars.appendChild(el);
+      gsap.to(el, {
+        scale: 0.8 + Math.random() * 0.4,
+        duration: 0.15,
+        ease: 'back.out(2)',
+      });
+      gsap.to(el, {
+        x: endX,
+        y: endY,
+        duration: 0.5 + Math.random() * 0.3,
+        delay: 0.05,
+        ease: 'power2.out',
+      });
+      gsap.to(el, {
+        opacity: 0.35,
+        scale: 0.5,
+        duration: 0.4,
+        delay: 0.3 + Math.random() * 0.2,
+      });
+    }
+
+    for (let i = 0; i < starCount; i++) {
+      const angle = (360 / starCount) * i + Math.random() * 20;
+      const rad = (angle * Math.PI) / 180;
+      const dist = 50 + Math.random() * 60;
+      const endX = Math.cos(rad) * dist;
+      const endY = Math.sin(rad) * dist;
+      const star = addParticle(starSvg(10 + Math.random() * 8), 'correct-star');
+      animateParticle(star, endX, endY);
+    }
+    for (let i = 0; i < triangleCount; i++) {
+      const angle = (360 / triangleCount) * i + 22 + Math.random() * 15;
+      const rad = (angle * Math.PI) / 180;
+      const dist = 45 + Math.random() * 50;
+      const endX = Math.cos(rad) * dist;
+      const endY = Math.sin(rad) * dist;
+      const tri = addParticle(triangleSvg(6 + Math.random() * 6), 'correct-star correct-star--triangle');
+      animateParticle(tri, endX, endY);
+    }
+  }
+
   function playCorrectEffect() {
     showFeedbackBadge('correct', false);
+    setupCorrectContent('せいかい！');
+    if (correctStars) correctStars.innerHTML = '';
+
     gsap.set(feedbackBadge, { scale: 0 });
-    gsap.to(feedbackBadge, { scale: 1, duration: 0.5, ease: 'back.out(2)' });
+    gsap.to(feedbackBadge, { scale: 1, duration: 0.4, ease: 'back.out(1.5)' });
+    animateCorrectCircleAndText();
+    gsap.delayedCall(0.4, createCorrectStars);
   }
 
   function playShipFlyOff() {
@@ -313,12 +391,67 @@
     });
   }
 
+  function animateCorrectCircleAndText() {
+    const circleOutline = feedbackCorrect?.querySelector('.correct-circle-outline');
+    const circlePath = feedbackCorrect?.querySelector('.correct-circle-path');
+    const chars = correctText?.querySelectorAll('.correct-char');
+    const len = 2 * Math.PI * 44;
+    if (circleOutline) {
+      gsap.set(circleOutline, { strokeDasharray: len, strokeDashoffset: len });
+      gsap.to(circleOutline, {
+        strokeDashoffset: 0,
+        duration: 0.55,
+        ease: 'power2.out',
+      });
+    }
+    if (circlePath) {
+      gsap.set(circlePath, { strokeDasharray: len, strokeDashoffset: len });
+      gsap.to(circlePath, {
+        strokeDashoffset: 0,
+        duration: 0.55,
+        ease: 'power2.out',
+      });
+    }
+    if (chars && chars.length) {
+      const easeSmooth = typeof CustomEase !== 'undefined'
+        ? CustomEase.create('smooth', '0.76, 0, 0.24, 1')
+        : 'power2.inOut';
+      gsap.set(chars, { display: 'inline-block', x: 0, y: 0 });
+      const n = chars.length;
+      chars.forEach((char, i) => {
+        const dist = 10 + Math.random() * 2;
+        const angleDeg = n > 1 ? 225 + 90 * (i / (n - 1)) : 270;
+        const rad = (angleDeg * Math.PI) / 180;
+        const scatterX = Math.cos(rad) * dist;
+        const scatterY = Math.sin(rad) * dist;
+        const delay = 0.3 + i * 0.03;
+        gsap.to(char, {
+          x: scatterX,
+          y: scatterY,
+          duration: 0.2,
+          delay: delay,
+          ease: easeSmooth,
+        });
+        gsap.to(char, {
+          x: 0,
+          y: 0,
+          duration: 0.25,
+          delay: delay + 0.2,
+          ease: easeSmooth,
+        });
+      });
+    }
+  }
+
   function playClearEffect() {
     createConfetti();
     showFeedbackBadge('clear', true);
+    if (correctStars) correctStars.innerHTML = '';
     gsap.set(btnTop, { opacity: 0 });
     gsap.set(feedbackBadge, { scale: 0 });
-    gsap.to(feedbackBadge, { scale: 1, duration: 0.6, delay: 0.2, ease: 'back.out(1.7)' });
+    gsap.to(feedbackBadge, { scale: 1, duration: 0.4, ease: 'back.out(1.5)' });
+    animateCorrectCircleAndText();
+    gsap.delayedCall(0.6, createCorrectStars);
     gsap.to(btnTop, { opacity: 1, duration: 0.3, delay: 1, onStart: () => btnTop.classList.add('visible') });
     redirectTimer = gsap.delayedCall(2.5, () => {
       window.location.href = 'result.html?status=clear';
@@ -336,12 +469,12 @@
       playCorrectEffect();
 
       if (correctCount >= TOTAL_QUESTIONS) {
-        gsap.delayedCall(0.8, () => {
+        gsap.delayedCall(2.2, () => {
           hideFeedbackBadge();
           playClearEffect();
         });
       } else {
-        gsap.delayedCall(0.8, () => {
+        gsap.delayedCall(2.2, () => {
           hideFeedbackBadge();
           currentQuestionIndex++;
           answered = false;
