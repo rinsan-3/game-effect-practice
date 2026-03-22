@@ -19,6 +19,7 @@
   const TOTAL_QUESTIONS = QUESTIONS.length;
   const theme = typeof Theme !== 'undefined' ? Theme.get() : 'ship';
   const feedbackBadge = document.getElementById('feedbackBadge');
+  const feedbackBadgeInner = document.getElementById('feedbackBadgeInner');
   const feedbackIcon = document.getElementById('feedbackIcon');
   const feedbackText = document.getElementById('feedbackText');
   const btnTop = document.getElementById('btnTop');
@@ -40,6 +41,8 @@
   const correctText = document.getElementById('correctText');
   const correctStars = document.getElementById('correctStars');
   const clearLight = document.getElementById('clearLight');
+  const feedbackIncorrect = document.getElementById('feedbackIncorrect');
+  const incorrectText = document.getElementById('incorrectText');
 
   function cancelRedirect() {
     if (redirectTimer) {
@@ -159,19 +162,16 @@
     feedbackText.className = 'feedback-text';
     btnTop.classList.remove('visible');
     if (feedbackCorrect) feedbackCorrect.classList.remove('visible', 'feedback-correct--clear');
+    if (feedbackIncorrect) feedbackIncorrect.classList.remove('visible');
     if (feedbackIcon) feedbackIcon.classList.remove('visible');
     if (feedbackText) feedbackText.classList.remove('visible');
 
     if (type === 'correct') {
       if (feedbackCorrect) feedbackCorrect.classList.add('visible');
     } else if (type === 'incorrect') {
-      if (feedbackIcon) feedbackIcon.classList.add('visible');
-      feedbackIcon.innerHTML = ICON_INCORRECT;
-      feedbackIcon.classList.add('feedback-icon--incorrect');
-      if (feedbackText) {
-        feedbackText.classList.add('visible');
-        feedbackText.textContent = '不正解...';
-        feedbackText.classList.add('feedback-text--incorrect');
+      if (feedbackIncorrect) feedbackIncorrect.classList.add('visible');
+      if (incorrectText) {
+        incorrectText.innerHTML = Array.from('ざんねん...').map((c) => `<span class="incorrect-char">${c}</span>`).join('');
       }
     } else if (type === 'clear') {
       if (feedbackCorrect) feedbackCorrect.classList.add('visible', 'feedback-correct--clear');
@@ -218,7 +218,7 @@
     }
 
     function animateParticle(el, endX, endY) {
-      gsap.set(el, { x: 0, y: 0, opacity: 1, scale: 0 });
+      gsap.set(el, { x: 0, y: 0, xPercent: -50, yPercent: -50, opacity: 1, scale: 0 });
       correctStars.appendChild(el);
       gsap.to(el, {
         scale: 0.8 + Math.random() * 0.4,
@@ -298,8 +298,8 @@
     setupCorrectContent('せいかい！');
     if (correctStars) correctStars.innerHTML = '';
 
-    gsap.set(feedbackBadge, { scale: 0 });
-    gsap.to(feedbackBadge, { scale: 1, duration: 0.4, ease: 'back.out(1.5)' });
+    gsap.set(feedbackBadgeInner, { scale: 0 });
+    gsap.to(feedbackBadgeInner, { scale: 1, duration: 0.4, ease: 'back.out(1.5)' });
     animateCorrectCircleAndText();
     gsap.delayedCall(0.4, createCorrectStars);
   }
@@ -401,17 +401,47 @@
     }
   }
 
+  function animateIncorrectContent() {
+    const outlinePaths = feedbackIncorrect?.querySelectorAll('.incorrect-x-outline');
+    const paths = feedbackIncorrect?.querySelectorAll('.incorrect-x-path');
+    const chars = incorrectText?.querySelectorAll('.incorrect-char');
+    const pathLen = Math.sqrt(2) * 56;
+
+    if (outlinePaths?.length) {
+      outlinePaths.forEach((path) => {
+        gsap.set(path, { strokeDasharray: pathLen, strokeDashoffset: pathLen });
+        gsap.to(path, { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out' });
+      });
+    }
+    if (paths?.length) {
+      paths.forEach((path) => {
+        gsap.set(path, { strokeDasharray: pathLen, strokeDashoffset: pathLen });
+        gsap.to(path, { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out' });
+      });
+    }
+
+    if (chars && chars.length) {
+      gsap.set(chars, { display: 'inline-block', y: -20 });
+      chars.forEach((char, i) => {
+        gsap.to(char, {
+          y: 0,
+          duration: 0.25,
+          delay: 0.4 + i * 0.08,
+          ease: 'steps(3)',
+        });
+      });
+    }
+  }
+
   function playIncorrectEffect() {
     playGameOverEffect();
 
     showFeedbackBadge('incorrect', true);
     gsap.set(btnTop, { opacity: 0, scale: 0.5 });
-    gsap.set(feedbackBadge, { scale: 0, x: 0 });
+    gsap.set(feedbackBadgeInner, { scale: 0, x: 0 });
 
-    const tl = gsap.timeline();
-    tl.to(feedbackBadge, { scale: 1, duration: 0.35, ease: 'back.out(1.5)' });
-    tl.to(feedbackBadge, { x: '+=4', duration: 0.04, yoyo: true, repeat: 6, ease: 'power2.inOut' });
-    tl.to(feedbackBadge, { x: 0, duration: 0.05 });
+    gsap.to(feedbackBadgeInner, { scale: 1, duration: 0.4, ease: 'back.out(1.5)' });
+    animateIncorrectContent();
 
     gsap.to(btnTop, {
       opacity: 1,
@@ -422,9 +452,9 @@
       onStart: () => btnTop.classList.add('visible'),
     });
 
-    redirectTimer = gsap.delayedCall(2.5, () => {
-      window.location.href = 'result.html?status=gameover';
-    });
+    // redirectTimer = gsap.delayedCall(2.5, () => {
+    //   window.location.href = 'result.html?status=gameover';
+    // });
   }
 
   function animateCorrectCircleAndText() {
@@ -474,6 +504,7 @@
           duration: 0.25,
           delay: delay + 0.2,
           ease: easeSmooth,
+          clearProps: 'transform',
         });
       });
     }
@@ -507,8 +538,8 @@
     showFeedbackBadge('clear', true);
     if (correctStars) correctStars.innerHTML = '';
     gsap.set(btnTop, { opacity: 0 });
-    gsap.set(feedbackBadge, { scale: 0 });
-    gsap.to(feedbackBadge, { scale: 1, duration: 0.4, ease: 'back.out(1.5)' });
+    gsap.set(feedbackBadgeInner, { scale: 0 });
+    gsap.to(feedbackBadgeInner, { scale: 1, duration: 0.4, ease: 'back.out(1.5)' });
     animateClearContent();
     gsap.delayedCall(0.6, () => createCorrectStars({ includeLines: false }));
     gsap.to(btnTop, { opacity: 1, duration: 0.3, delay: 1, onStart: () => btnTop.classList.add('visible') });

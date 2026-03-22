@@ -35,7 +35,8 @@
 
     <!-- 正解/不正解フィードバック（オーバーレイなし） -->
     <div class="feedback-badge" id="feedbackBadge" aria-live="polite" aria-hidden="true">
-      <div class="feedback-correct" id="feedbackCorrect">
+      <div class="feedback-badge__inner" id="feedbackBadgeInner">
+        <div class="feedback-correct" id="feedbackCorrect">
         <svg class="correct-circle" viewBox="0 0 100 100" aria-hidden="true">
           <circle class="correct-circle-outline" cx="50" cy="50" r="44" fill="none"/>
           <circle class="correct-circle-path" cx="50" cy="50" r="44" fill="none"/>
@@ -43,10 +44,20 @@
         <div class="clear-light" id="clearLight" aria-hidden="true"></div>
         <span class="correct-text" id="correctText"></span>
         <div class="correct-stars" id="correctStars"></div>
+        </div>
+        <div class="feedback-incorrect" id="feedbackIncorrect">
+        <svg class="incorrect-x" viewBox="0 0 100 100" aria-hidden="true">
+          <path class="incorrect-x-outline" d="M 22 22 L 78 78"/>
+          <path class="incorrect-x-outline" d="M 78 22 L 22 78"/>
+          <path class="incorrect-x-path" d="M 22 22 L 78 78"/>
+          <path class="incorrect-x-path" d="M 78 22 L 22 78"/>
+        </svg>
+        <span class="incorrect-text" id="incorrectText"></span>
+        </div>
+        <span class="feedback-icon" id="feedbackIcon"></span>
+        <span class="feedback-text" id="feedbackText"></span>
+        <a href="#" class="btn-top feedback-btn" id="btnTop">TOPに戻る</a>
       </div>
-      <span class="feedback-icon" id="feedbackIcon"></span>
-      <span class="feedback-text" id="feedbackText"></span>
-      <a href="#" class="btn-top feedback-btn" id="btnTop">TOPに戻る</a>
     </div>
 
     <!-- クリア時のみ：紙吹雪 -->

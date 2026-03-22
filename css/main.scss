@@ -241,16 +241,12 @@ body {
 }
 
 // フィードバック（領域なし・コンテンツのみ表示）
+// 親: 位置固定のみ（GSAPで触らない）
 .feedback-badge {
   position: fixed;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  padding: 0;
   z-index: 100;
   visibility: hidden;
   pointer-events: none;
@@ -259,6 +255,16 @@ body {
     visibility: visible;
     pointer-events: auto;
   }
+}
+
+// 子: スケールアニメ用（GSAPがtransformを上書きしても中央ずれしない）
+.feedback-badge__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  transform-origin: center center;
 }
 
 .feedback-correct {
@@ -334,6 +340,55 @@ body {
 }
 
 .correct-char {
+  display: inline-block;
+}
+
+.feedback-incorrect {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 140px;
+
+  &.visible {
+    display: flex;
+  }
+}
+
+.incorrect-x {
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(3px 3px 0 rgba(0, 0, 0, 0.2));
+}
+
+.incorrect-x-outline {
+  stroke: #1e293b;
+  stroke-width: 20;
+  stroke-linecap: round;
+}
+
+.incorrect-x-path {
+  stroke: #2563eb;
+  stroke-width: 14;
+  stroke-linecap: round;
+}
+
+.incorrect-text {
+  position: relative;
+  z-index: 2;
+  font-family: "ads-piccolo", sans-serif;
+  font-size: 2.5rem;
+  font-weight: 400;
+  color: #1e293b;
+  white-space: nowrap;
+}
+
+.incorrect-char {
   display: inline-block;
 }
 
