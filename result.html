@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学習アプリ - リザルト</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <main class="result-page">
+    <header class="result-header">
+      <h1 class="result-title">リザルト</h1>
+      <p class="result-score" id="resultScore">1000 pt</p>
+    </header>
+
+    <div class="result-content">
+      <h2 class="ranking-section-title">ランキング</h2>
+      <ul class="ranking-list" id="rankingList">
+        <li class="ranking-item top3 is-player" data-rank="1">
+          <span class="ranking-rank rank-1">1</span>
+          <span class="ranking-name">あなた</span>
+          <span class="ranking-score">1000 pt</span>
+        </li>
+        <li class="ranking-item top3" data-rank="2">
+          <span class="ranking-rank rank-2">2</span>
+          <span class="ranking-name">プレイヤー2</span>
+          <span class="ranking-score">850 pt</span>
+        </li>
+        <li class="ranking-item top3" data-rank="3">
+          <span class="ranking-rank rank-3">3</span>
+          <span class="ranking-name">プレイヤー3</span>
+          <span class="ranking-score">720 pt</span>
+        </li>
+      </ul>
+
+      <div class="result-actions">
+        <a href="#" class="btn-top" id="btnTop">TOPに戻る</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script src="js/result.js"></script>
+</body>
+</html>

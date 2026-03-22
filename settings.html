@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学習アプリ - 設定</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <main class="settings-page">
+    <header class="settings-header">
+      <h1 class="settings-title">設定</h1>
+    </header>
+
+    <div class="settings-content">
+      <section class="settings-section">
+        <h2 class="settings-section-title">テーマ</h2>
+        <p class="settings-section-desc">進捗インジケーターの見た目を選べます</p>
+        <div class="theme-options" id="themeOptions">
+          <label class="theme-option">
+            <input type="radio" name="theme" value="ship" id="themeShip">
+            <span class="theme-option-label">船</span>
+          </label>
+          <label class="theme-option">
+            <input type="radio" name="theme" value="train" id="themeTrain">
+            <span class="theme-option-label">電車</span>
+          </label>
+          <label class="theme-option">
+            <input type="radio" name="theme" value="hero" id="themeHero">
+            <span class="theme-option-label">勇者</span>
+          </label>
+        </div>
+      </section>
+
+      <div class="settings-actions">
+        <a href="index.html" class="btn-top">TOPに戻る</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/theme.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>

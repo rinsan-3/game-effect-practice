@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学習アプリ - 問題</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <main class="problem-page">
+    <header class="problem-header">
+      <h1 class="problem-title">問題</h1>
+    </header>
+
+    <div class="problem-content">
+      <p class="problem-text" id="problemText"></p>
+      <div class="problem-choices" id="problemChoices"></div>
+    </div>
+
+    <!-- 進捗インジケーター -->
+    <div class="progress-indicator">
+      <div class="progress-track" id="progressTrack">
+        <div class="progress-icon" id="progressIcon" aria-hidden="true">
+          <!-- テーマに応じてJSで差し替え -->
+        </div>
+        <span class="progress-goal">ゴール</span>
+      </div>
+    </div>
+
+    <!-- 正解/不正解フィードバック（オーバーレイなし） -->
+    <div class="feedback-badge" id="feedbackBadge" aria-live="polite" aria-hidden="true">
+      <span class="feedback-icon" id="feedbackIcon"></span>
+      <span class="feedback-text" id="feedbackText"></span>
+      <a href="#" class="btn-top feedback-btn" id="btnTop">TOPに戻る</a>
+    </div>
+
+    <!-- クリア時のみ：紙吹雪 -->
+    <div class="confetti-layer" id="confettiLayer" aria-hidden="true">
+      <div class="confetti-container" id="confettiContainer"></div>
+    </div>
+  </main>
+
+  <script src="js/theme.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/Physics2DPlugin.min.js"></script>
+  <script src="js/problem.js"></script>
+</body>
+</html>

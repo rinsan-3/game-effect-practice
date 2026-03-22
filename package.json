@@ -1,0 +1,12 @@
+{
+  "name": "lesson-app",
+  "version": "1.0.0",
+  "description": "小学生向け学習Webアプリケーションの演出サンプル",
+  "scripts": {
+    "build:css": "sass css/main.scss css/main.css",
+    "watch:css": "sass --watch css/main.scss:css/main.css"
+  },
+  "devDependencies": {
+    "sass": "^1.77.0"
+  }
+}

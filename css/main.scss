@@ -1,0 +1,604 @@
+// ========================================
+// 変数・ベース（キッズ・ポップ・アクセシブル）
+// ========================================
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap');
+
+$color-primary: #2563eb;
+$color-success: #22c55e;
+$color-danger: #ef4444;
+$color-gold: #fbbf24;
+$color-silver: #94a3b8;
+$color-bronze: #d97706;
+$color-text: #1e293b;
+$color-text-muted: #475569;
+$font-family: 'M PLUS Rounded 1c', 'Hiragino Sans', sans-serif;
+$spacing: 16px;
+$radius: 20px;
+$radius-lg: 28px;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: $font-family;
+  min-height: 100vh;
+  background: linear-gradient(160deg, #fef3c7 0%, #fde68a 40%, #fcd34d 100%);
+  color: $color-text;
+  padding: $spacing;
+}
+
+// ========================================
+// インデックスページ
+// ========================================
+.index-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.index-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 32px;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.02em;
+}
+
+.index-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.index-link {
+  display: block;
+  padding: 18px 28px;
+  background: rgba(255, 255, 255, 0.95);
+  color: $color-primary;
+  text-decoration: none;
+  border-radius: $radius-lg;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-align: center;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.1), 0 8px 20px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+// ========================================
+// 問題画面
+// ========================================
+.problem-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.problem-header {
+  margin-bottom: 24px;
+}
+
+.problem-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+}
+
+.problem-content {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: $radius-lg;
+  padding: 28px;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.08), 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.problem-text {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  margin-bottom: 32px;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.problem-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.problem-choice {
+  padding: 18px 24px;
+  font-size: 1.1rem;
+  font-family: inherit;
+  font-weight: 500;
+  border: 3px solid #cbd5e1;
+  border-radius: $radius-lg;
+  background: #fff;
+  color: #1e293b;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  text-align: left;
+
+  &:hover:not(:disabled) {
+    border-color: $color-primary;
+    background: rgba($color-primary, 0.1);
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+// 進捗インジケーター
+.progress-indicator {
+  flex-shrink: 0;
+  margin-top: 20px;
+  padding: 16px 0;
+}
+
+.progress-track {
+  position: relative;
+  height: 48px;
+  background: linear-gradient(180deg, #7dd3fc 0%, #0ea5e9 100%);
+  border-radius: 24px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 4px 0 rgba(0, 0, 0, 0.1);
+  overflow: visible;
+
+  &--train {
+    background: linear-gradient(180deg, #64748b 0%, #475569 100%);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 4px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  &--hero {
+    background: linear-gradient(180deg, #86efac 0%, #22c55e 100%);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 4px 0 rgba(0, 0, 0, 0.1);
+  }
+}
+
+.progress-icon {
+  position: absolute;
+  left: 36px;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 32px;
+  z-index: 2;
+
+  &.is-flying {
+    position: fixed;
+    z-index: 90;
+  }
+}
+
+.progress-icon svg,
+.theme-icon {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.progress-goal {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+// 紙吹雪（クラッカー）
+.confetti-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  visibility: hidden;
+
+  &.visible {
+    visibility: visible;
+  }
+}
+
+.confetti-container {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  transform-origin: center center;
+}
+
+// フィードバックバッジ（オーバーレイなし）
+.feedback-badge {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 40px;
+  background: #fff;
+  border-radius: $radius-lg;
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.1), 0 16px 40px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  visibility: hidden;
+  pointer-events: none;
+
+  &.visible {
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+.feedback-icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  line-height: 1;
+}
+
+.feedback-icon--correct {
+  color: $color-success;
+}
+
+.feedback-icon--incorrect {
+  color: $color-danger;
+}
+
+.feedback-text {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: $color-text;
+  letter-spacing: 0.02em;
+}
+
+.feedback-text--correct {
+  color: $color-success;
+}
+
+.feedback-text--incorrect {
+  color: $color-danger;
+}
+
+.feedback-badge .btn-top,
+.btn-top {
+  display: inline-block;
+  padding: 16px 32px;
+  background: $color-primary;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-family: inherit;
+  border: none;
+  border-radius: $radius-lg;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #1d4ed8, 0 8px 20px rgba(37, 99, 235, 0.4);
+  text-decoration: none;
+  margin-top: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+
+  &.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.feedback-badge .feedback-btn {
+  margin-top: 4px;
+}
+
+// ========================================
+// リザルト・ランキング画面
+// ========================================
+.result-page,
+.ranking-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.result-header,
+.ranking-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.result-title,
+.ranking-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+}
+
+.result-score {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #d97706;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+  margin-top: 8px;
+}
+
+.ranking-section-title {
+  font-size: 1.125rem;
+  margin-bottom: 16px;
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.result-content,
+.ranking-content {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: $radius-lg;
+  padding: 28px;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.08), 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.ranking-list {
+  list-style: none;
+}
+
+.ranking-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  margin-bottom: 10px;
+  border-radius: $radius;
+  background: #f8fafc;
+  transition: background 0.2s;
+
+  &.is-player {
+    background: linear-gradient(135deg, rgba($color-primary, 0.15) 0%, rgba($color-primary, 0.08) 100%);
+    border: 3px solid $color-primary;
+  }
+
+  &.top3 {
+    position: relative;
+    overflow: hidden;
+  }
+}
+
+.ranking-rank {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.125rem;
+  font-family: inherit;
+  border-radius: 50%;
+  color: #fff;
+
+  &.rank-1 {
+    background: linear-gradient(135deg, $color-gold, #ffb347);
+    box-shadow: 0 2px 8px rgba($color-gold, 0.5);
+  }
+
+  &.rank-2 {
+    background: linear-gradient(135deg, $color-silver, #a8a8a8);
+    box-shadow: 0 2px 8px rgba($color-silver, 0.5);
+  }
+
+  &.rank-3 {
+    background: linear-gradient(135deg, $color-bronze, #b87333);
+    box-shadow: 0 2px 8px rgba($color-bronze, 0.5);
+  }
+
+  &.rank-other {
+    background: #6c757d;
+  }
+}
+
+.ranking-name {
+  flex: 1;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.ranking-score {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: $color-primary;
+}
+
+// 1位 反射キラッエフェクト（左→右に光が走る）
+.ranking-item.top3.is-player {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 90%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 40%,
+      rgba(255, 255, 255, 0.9) 41%,
+      rgba(255, 255, 255, 0.9) 59%,
+      transparent 60%,
+      transparent 100%
+    );
+    transform: skewX(-25deg);
+    animation: shine-sweep 6s ease-in-out infinite;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
+
+@keyframes shine-sweep {
+  /* 0.5s スイープ → 1s 休憩 → 0.5s スイープ → 1s 休憩 (計3s) */
+  /* 休憩中は一瞬で開始位置にリセット（右→左の見える動きを防ぐ） */
+  0% {
+    left: -60%;
+  }
+  16.67% {
+    left: 150%;
+  }
+  16.68% {
+    left: -60%;
+  }
+  50% {
+    left: -60%;
+  }
+  66.67% {
+    left: 150%;
+  }
+  66.68% {
+    left: -60%;
+  }
+  100% {
+    left: -60%;
+  }
+}
+
+.result-actions,
+.ranking-actions {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.result-actions .btn-top,
+.ranking-actions .btn-top {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+// ========================================
+// 設定画面
+// ========================================
+.settings-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.settings-header {
+  margin-bottom: 24px;
+}
+
+.settings-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+}
+
+.settings-content {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: $radius-lg;
+  padding: 28px;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.08), 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.settings-section {
+  margin-bottom: 24px;
+}
+
+.settings-section-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.settings-section-desc {
+  font-size: 0.9rem;
+  color: $color-text-muted;
+  margin-bottom: 16px;
+}
+
+.theme-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-radius: $radius;
+  background: #f8fafc;
+  border: 3px solid #e2e8f0;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+
+  &:has(input:checked) {
+    border-color: $color-primary;
+    background: rgba($color-primary, 0.08);
+  }
+
+  input {
+    width: 20px;
+    height: 20px;
+    accent-color: $color-primary;
+  }
+}
+
+.theme-option-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.settings-actions {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.settings-actions .btn-top {
+  opacity: 1;
+  pointer-events: auto;
+}
