@@ -126,20 +126,16 @@ body {
 // ライフ表示
 // ========================================
 .life-display {
-  position: fixed;
-  top: 16px;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
-  gap: 8px;
-  z-index: 50;
+  gap: 6px;
+  flex-shrink: 0;
   pointer-events: none;
 }
 
 .life-heart {
   position: relative;
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -199,18 +195,54 @@ body {
   display: flex;
   flex-direction: column;
   padding: 24px;
-  padding-top: 56px; /* ライフ表示の高さ分 */
 }
 
 .problem-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   margin-bottom: 24px;
+  min-width: 0; /* flex子の縮小を許可 */
 }
 
 .problem-title {
-  font-size: 1.25rem;
+  flex-shrink: 0;
+  font-size: 1.125rem;
   font-weight: 700;
   color: #1e293b;
   text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+}
+
+.problem-quit-btn {
+  flex-shrink: 0;
+  display: inline-block;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
+  border: 3px solid #cbd5e1;
+  border-radius: $radius-pill;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 2px 0 rgba(0, 0, 0, 0.05);
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+
+  &:hover {
+    color: #475569;
+    background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%);
+    border-color: #94a3b8;
+  }
+}
+
+@media (min-width: 400px) {
+  .problem-title { font-size: 1.25rem; }
+  .problem-quit-btn { padding: 10px 18px; font-size: 0.9rem; }
+  .life-display { gap: 8px; }
+  .life-heart { width: 36px; height: 36px; }
 }
 
 .problem-content {

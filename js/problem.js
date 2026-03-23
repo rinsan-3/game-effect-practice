@@ -41,6 +41,7 @@
 
   const ICON_INCORRECT = '<svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="currentColor" stroke="currentColor" stroke-width="3"/><path d="M20 20 L44 44 M44 20 L20 44" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/></svg>';
 
+  const btnQuit = document.getElementById('btnQuit');
   const feedbackCorrect = document.getElementById('feedbackCorrect');
   const correctText = document.getElementById('correctText');
   const correctStars = document.getElementById('correctStars');
@@ -84,15 +85,18 @@
     if (crack) gsap.to(crack, { opacity: 1, duration: 0.08, delay: 0.08 });
 
     // 3. 2つに割れて落下 (0.18~0.5s)
+    const w = rect.width;
+    const h = rect.height;
+    const halfW = w / 2;
     const leftHalf = document.createElement('div');
     leftHalf.className = 'life-heart-half life-heart-half--left';
-    leftHalf.style.cssText = `position:fixed;left:${rect.left}px;top:${rect.top}px;width:18px;height:36px;color:#ec4899;pointer-events:none;z-index:51;overflow:hidden;`;
-    leftHalf.innerHTML = `<span style="display:block;width:36px;height:36px;filter:drop-shadow(2px 2px 0 #be185d);">${HEART_SVG}</span>`;
+    leftHalf.style.cssText = `position:fixed;left:${rect.left}px;top:${rect.top}px;width:${halfW}px;height:${h}px;color:#ec4899;pointer-events:none;z-index:51;overflow:hidden;`;
+    leftHalf.innerHTML = `<span style="display:block;width:${w}px;height:${h}px;filter:drop-shadow(2px 2px 0 #be185d);">${HEART_SVG}</span>`;
 
     const rightHalf = document.createElement('div');
     rightHalf.className = 'life-heart-half life-heart-half--right';
-    rightHalf.style.cssText = `position:fixed;left:${rect.left + 18}px;top:${rect.top}px;width:18px;height:36px;color:#ec4899;pointer-events:none;z-index:51;overflow:hidden;`;
-    rightHalf.innerHTML = `<span style="display:block;width:36px;height:36px;margin-left:-18px;filter:drop-shadow(2px 2px 0 #be185d);">${HEART_SVG}</span>`;
+    rightHalf.style.cssText = `position:fixed;left:${rect.left + halfW}px;top:${rect.top}px;width:${halfW}px;height:${h}px;color:#ec4899;pointer-events:none;z-index:51;overflow:hidden;`;
+    rightHalf.innerHTML = `<span style="display:block;width:${w}px;height:${h}px;margin-left:-${halfW}px;filter:drop-shadow(2px 2px 0 #be185d);">${HEART_SVG}</span>`;
 
     document.body.appendChild(leftHalf);
     document.body.appendChild(rightHalf);
@@ -514,41 +518,31 @@
     const hearts = lifeDisplay?.querySelectorAll('.life-heart');
     const heartToAnimate = hearts?.[lives] || null;
 
-    animateLifeLoss(heartToAnimate, () => {
-      if (lives === 0) {
-        playGameOverEffect();
-      }
+    // まず「ざんねん...」を表示してから、0.35秒後にハート減る演出を開始
+    if (lives === 0) {
+      playGameOverEffect();
+    }
+    showFeedbackBadge('incorrect', false);
+    gsap.set(feedbackBadgeInner, { scale: 0, x: 0 });
+    gsap.to(feedbackBadgeInner, { scale: 1, duration: 0.4, ease: 'back.out(1.5)' });
+    animateIncorrectContent();
 
-      showFeedbackBadge('incorrect', true);
-      gsap.set(btnTop, { opacity: 0, scale: 0.5 });
-      gsap.set(feedbackBadgeInner, { scale: 0, x: 0 });
-
-      gsap.to(feedbackBadgeInner, { scale: 1, duration: 0.4, ease: 'back.out(1.5)' });
-      animateIncorrectContent();
-
-      gsap.to(btnTop, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.5,
-        delay: 0.8,
-        ease: 'back.out(2)',
-        onStart: () => btnTop.classList.add('visible'),
+    gsap.delayedCall(0.35, () => {
+      animateLifeLoss(heartToAnimate, () => {
+        if (lives === 0) {
+          redirectTimer = gsap.delayedCall(2.5, () => {
+            window.location.href = 'result.html?status=gameover';
+          });
+        } else {
+          redirectTimer = gsap.delayedCall(2.5, () => {
+            hideFeedbackBadge();
+            currentQuestionIndex++;
+            answered = false;
+            renderQuestion();
+            bindChoiceHandlers();
+          });
+        }
       });
-
-      if (lives === 0) {
-        redirectTimer = gsap.delayedCall(2.5, () => {
-          window.location.href = 'result.html?status=gameover';
-        });
-      } else {
-        // ライフ残りあり → 次の問題へ
-        redirectTimer = gsap.delayedCall(2.5, () => {
-          hideFeedbackBadge();
-          currentQuestionIndex++;
-          answered = false;
-          renderQuestion();
-          bindChoiceHandlers();
-        });
-      }
     });
   }
 
@@ -686,6 +680,14 @@
       cancelRedirect();
       window.location.href = 'index.html';
     });
+
+    if (btnQuit) {
+      btnQuit.addEventListener('click', function (e) {
+        e.preventDefault();
+        cancelRedirect();
+        window.location.href = 'index.html';
+      });
+    }
   }
 
   init();
