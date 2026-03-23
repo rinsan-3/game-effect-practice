@@ -34,6 +34,10 @@
   let correctCount = 0;
   let answered = false;
   let redirectTimer = null;
+  let lives = 3;
+
+  const lifeDisplay = document.getElementById('lifeDisplay');
+  const HEART_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
 
   const ICON_INCORRECT = '<svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="currentColor" stroke="currentColor" stroke-width="3"/><path d="M20 20 L44 44 M44 20 L20 44" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/></svg>';
 
@@ -49,6 +53,76 @@
       redirectTimer.kill();
       redirectTimer = null;
     }
+  }
+
+  function updateLifeAriaLabel() {
+    if (lifeDisplay) lifeDisplay.setAttribute('aria-label', `ライフ 残り${lives}`);
+  }
+
+  function animateLifeLoss(heartEl, onComplete) {
+    if (!heartEl) {
+      if (onComplete) onComplete();
+      return;
+    }
+    const crack = heartEl.querySelector('.life-heart-crack');
+    const inner = heartEl.querySelector('.life-heart-inner');
+    const rect = heartEl.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const topY = rect.top;
+
+    // 1. 震え (0~0.1s)
+    gsap.to(heartEl, {
+      x: '+=4',
+      duration: 0.025,
+      repeat: 4,
+      yoyo: true,
+      ease: 'power2.inOut',
+    });
+    gsap.to(heartEl, { x: 0, duration: 0, delay: 0.1 });
+
+    // 2. ヒビ表示 (0.08~0.18s)
+    if (crack) gsap.to(crack, { opacity: 1, duration: 0.08, delay: 0.08 });
+
+    // 3. 2つに割れて落下 (0.18~0.5s)
+    const leftHalf = document.createElement('div');
+    leftHalf.className = 'life-heart-half life-heart-half--left';
+    leftHalf.style.cssText = `position:fixed;left:${rect.left}px;top:${rect.top}px;width:18px;height:36px;color:#ec4899;pointer-events:none;z-index:51;overflow:hidden;`;
+    leftHalf.innerHTML = `<span style="display:block;width:36px;height:36px;filter:drop-shadow(2px 2px 0 #be185d);">${HEART_SVG}</span>`;
+
+    const rightHalf = document.createElement('div');
+    rightHalf.className = 'life-heart-half life-heart-half--right';
+    rightHalf.style.cssText = `position:fixed;left:${rect.left + 18}px;top:${rect.top}px;width:18px;height:36px;color:#ec4899;pointer-events:none;z-index:51;overflow:hidden;`;
+    rightHalf.innerHTML = `<span style="display:block;width:36px;height:36px;margin-left:-18px;filter:drop-shadow(2px 2px 0 #be185d);">${HEART_SVG}</span>`;
+
+    document.body.appendChild(leftHalf);
+    document.body.appendChild(rightHalf);
+
+    gsap.set(inner, { opacity: 0 });
+    heartEl.classList.add('is-lost');
+
+    gsap.to(leftHalf, {
+      x: -60,
+      y: 100,
+      rotation: -40,
+      opacity: 0,
+      duration: 0.32,
+      delay: 0.18,
+      ease: 'power2.in',
+    });
+    gsap.to(rightHalf, {
+      x: 60,
+      y: 100,
+      rotation: 40,
+      opacity: 0,
+      duration: 0.32,
+      delay: 0.18,
+      ease: 'power2.in',
+      onComplete: () => {
+        leftHalf.remove();
+        rightHalf.remove();
+        if (onComplete) onComplete();
+      },
+    });
   }
 
   function initTheme() {
@@ -434,26 +508,47 @@
   }
 
   function playIncorrectEffect() {
-    playGameOverEffect();
+    lives--;
+    updateLifeAriaLabel();
 
-    showFeedbackBadge('incorrect', true);
-    gsap.set(btnTop, { opacity: 0, scale: 0.5 });
-    gsap.set(feedbackBadgeInner, { scale: 0, x: 0 });
+    const hearts = lifeDisplay?.querySelectorAll('.life-heart');
+    const heartToAnimate = hearts?.[lives] || null;
 
-    gsap.to(feedbackBadgeInner, { scale: 1, duration: 0.4, ease: 'back.out(1.5)' });
-    animateIncorrectContent();
+    animateLifeLoss(heartToAnimate, () => {
+      if (lives === 0) {
+        playGameOverEffect();
+      }
 
-    gsap.to(btnTop, {
-      opacity: 1,
-      scale: 1,
-      duration: 0.5,
-      delay: 0.8,
-      ease: 'back.out(2)',
-      onStart: () => btnTop.classList.add('visible'),
-    });
+      showFeedbackBadge('incorrect', true);
+      gsap.set(btnTop, { opacity: 0, scale: 0.5 });
+      gsap.set(feedbackBadgeInner, { scale: 0, x: 0 });
 
-    redirectTimer = gsap.delayedCall(2.5, () => {
-      window.location.href = 'result.html?status=gameover';
+      gsap.to(feedbackBadgeInner, { scale: 1, duration: 0.4, ease: 'back.out(1.5)' });
+      animateIncorrectContent();
+
+      gsap.to(btnTop, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.5,
+        delay: 0.8,
+        ease: 'back.out(2)',
+        onStart: () => btnTop.classList.add('visible'),
+      });
+
+      if (lives === 0) {
+        redirectTimer = gsap.delayedCall(2.5, () => {
+          window.location.href = 'result.html?status=gameover';
+        });
+      } else {
+        // ライフ残りあり → 次の問題へ
+        redirectTimer = gsap.delayedCall(2.5, () => {
+          hideFeedbackBadge();
+          currentQuestionIndex++;
+          answered = false;
+          renderQuestion();
+          bindChoiceHandlers();
+        });
+      }
     });
   }
 
@@ -581,6 +676,7 @@
 
   function init() {
     initTheme();
+    updateLifeAriaLabel();
     renderQuestion();
     bindChoiceHandlers();
     updateIconPosition();
